@@ -2,18 +2,20 @@
   color-scheme: light;
 
   /* Colors */
-  --color-bg: #f7f7f5;
-  --color-text: #121212;
-  --color-text-muted: #5a5f65;
-  --color-border: #e1e3e6;
+  --color-bg: #f5f6f4;
+  --color-bg-muted: #eef1ee;
+  --color-text: #111316;
+  --color-text-muted: #55606a;
+  --color-border: #dfe3e6;
   --color-surface: #ffffff;
-  --color-primary: #1f6feb;
+  --color-primary: #2a6ef4;
   --color-primary-text: #ffffff;
+  --color-accent: #1f8a5b;
 
   /* Spacing */
   --space-container-x: clamp(16px, 4vw, 48px);
-  --space-section-y: clamp(48px, 8vw, 96px);
-  --space-section-hero-y: clamp(72px, 10vw, 140px);
+  --space-section-y: clamp(56px, 8vw, 104px);
+  --space-section-hero-y: clamp(88px, 12vw, 160px);
 
   /* Radius */
   --radius-sm: 6px;
@@ -21,16 +23,35 @@
   --radius-lg: 16px;
 
   /* Shadow */
-  --shadow-card: 0 8px 24px rgba(18, 18, 18, 0.08);
+  --shadow-card: 0 12px 30px rgba(17, 19, 22, 0.08);
 
   /* Typography */
   --font-size-base: 16px;
-  --font-size-h1: clamp(2.25rem, 4vw, 3rem);
-  --font-size-h2: clamp(1.5rem, 2.2vw, 2.125rem);
-  --font-size-h3: clamp(1.25rem, 1.8vw, 1.5rem);
+  --font-size-h1: clamp(2.5rem, 4.4vw, 3.4rem);
+  --font-size-h2: clamp(1.6rem, 2.4vw, 2.2rem);
+  --font-size-h3: clamp(1.2rem, 1.6vw, 1.5rem);
+  --line-height-body: 1.7;
+  --line-height-heading: 1.15;
 
   /* Layout */
   --container-max-width: 1200px;
+  --navbar-height: 72px;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg: #0f1316;
+  --color-bg-muted: #151a1f;
+  --color-text: #f2f4f8;
+  --color-text-muted: #a9b3bd;
+  --color-border: #2a323a;
+  --color-surface: #141a20;
+  --color-primary: #7aa7ff;
+  --color-primary-text: #0b0f13;
+  --color-accent: #5fcf9b;
+
+  --shadow-card: 0 16px 34px rgba(0, 0, 0, 0.28);
 }
 
 * {
@@ -41,14 +62,25 @@
 
 html {
   font-size: var(--font-size-base);
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: radial-gradient(
+      1200px circle at 10% 0%,
+      color-mix(in srgb, var(--color-bg-muted) 70%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      1000px circle at 90% 10%,
+      color-mix(in srgb, var(--color-bg-muted) 60%, transparent),
+      transparent 75%
+    ),
+    var(--color-bg);
   color: var(--color-text);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.6;
+  line-height: var(--line-height-body);
   text-rendering: optimizeLegibility;
 }
 
@@ -70,7 +102,7 @@ h4,
 h5,
 h6 {
   font-weight: 700;
-  line-height: 1.2;
+  line-height: var(--line-height-heading);
   letter-spacing: -0.02em;
 }
 
@@ -147,6 +179,47 @@ p {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.navbarInner {
+  min-height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.navbarBrand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.navbarLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--color-text-muted);
+}
+
+.navbarLinks a {
+  font-weight: 600;
+}
+
+.themeToggle {
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
 }
 
 .hero {
@@ -245,7 +318,7 @@ p {
 
 .card:hover,
 .card:focus-within {
-  border-color: rgba(31, 111, 235, 0.4);
+  border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
   box-shadow: 0 12px 28px rgba(18, 18, 18, 0.12);
 }
 
@@ -269,7 +342,7 @@ p {
   padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid var(--color-border);
-  background: var(--color-bg);
+  background: var(--color-bg-muted);
   color: var(--color-text-muted);
 }
 
@@ -361,6 +434,7 @@ p {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
 .contactFooterLink:hover {
   text-decoration-thickness: 2px;
 }
@@ -380,5 +454,20 @@ p {
 
   .heroSummary {
     max-width: 100%;
+  }
+
+  .navbarInner {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbarLinks {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
   }
 }
