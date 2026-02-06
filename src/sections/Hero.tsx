@@ -1,63 +1,109 @@
+import {
+  ArrowDown,
+  GithubLogo,
+  LinkedinLogo,
+  EnvelopeSimple,
+} from '@phosphor-icons/react'
+import type { MouseEvent } from 'react'
 import Section from '../components/layout/Section'
 
-const BADGES = ['3+ years', 'Java', 'Spring Boot', 'SQL', 'AWS']
-const HIGHLIGHTS = ['Reliable APIs', 'Rule engines', 'Scalable services']
-const STACK = ['Java', 'Spring Boot', 'SQL', 'AWS']
+const RESUME_PATH = '/resume.pdf'
+const GITHUB_URL = 'https://github.com/tienhuynh-tn'
+const LINKEDIN_URL = 'https://www.linkedin.com/in/tienhuynh-tn/'
+
+const TAGLINE = '3+ years • Java • Spring Boot • SQL • AWS'
+
+function scrollToId(event: MouseEvent<HTMLAnchorElement>, id: string) {
+  event.preventDefault()
+  const element = document.getElementById(id)
+  if (!element) return
+  element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 
 function Hero() {
   return (
     <Section id="home" variant="hero">
-      <div className="heroGrid">
-        <div className="hero">
-          <h1 className="heroTitle">Huỳnh Tiên (Fairy)</h1>
-          <h2 className="heroSubtitle">Senior Java Backend Developer</h2>
+      <div className="relative isolate overflow-hidden">
+        <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-[color:var(--primary)]/10 blur-3xl sm:h-80 sm:w-80" />
 
-          <p className="heroSummary">
-            Senior Java backend developer with 3+ years of experience building
-            clear, stable, and scalable backend services. Focused on long-term
-            maintainability and systems that evolve cleanly as business needs
-            change.
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center">
+          <p className="inline-flex items-center rounded-full border border-[color:var(--border)] px-4 py-1.5 text-sm font-medium text-[color:var(--muted)]">
+            {TAGLINE}
           </p>
 
-          <div className="badgeRow" aria-label="Highlights">
-            {BADGES.map((item, idx) => (
-              <span key={item}>
-                {item}
-                {idx < BADGES.length - 1 ? (
-                  <span className="badgeDot"> • </span>
-                ) : null}
-              </span>
-            ))}
+          <div className="space-y-3">
+            <h1 className="text-4xl font-bold tracking-tight text-[color:var(--text)] sm:text-5xl md:text-6xl">
+              Tien Huynh (Fairy)
+            </h1>
+            <h2 className="bg-gradient-to-r from-[color:var(--primary)] to-[color:var(--text)] bg-clip-text text-2xl font-semibold tracking-tight text-transparent sm:text-3xl">
+              Senior Java Backend Developer
+            </h2>
           </div>
 
-          <div className="ctaRow">
-            <a href="#projects" className="btn btnPrimary">
+          <p className="max-w-2xl text-base leading-relaxed text-[color:var(--muted)] sm:text-lg">
+            I build reliable, scalable Java backend systems that stay
+            maintainable as product complexity grows.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="#projects"
+              onClick={(event) => scrollToId(event, 'projects')}
+              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[color:var(--primary)] px-6 py-2.5 text-sm font-semibold text-[color:var(--primaryText)] transition hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
+            >
               View Projects
             </a>
-            <a href="/resume.pdf" className="btn btnSecondary">
-              Download Resume
+            <a
+              href={RESUME_PATH}
+              download
+              className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--border)] bg-transparent px-6 py-2.5 text-sm font-semibold text-[color:var(--text)] transition hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
+            >
+              Download CV
             </a>
           </div>
-        </div>
 
-        <aside className="heroPanel">
-          <h3>What I build</h3>
-          <ul className="heroBullets">
-            {HIGHLIGHTS.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <div>
-            <div className="text-muted">Stack</div>
-            <div className="pillRow">
-              {STACK.map((item) => (
-                <span key={item} className="pill">
-                  {item}
-                </span>
-              ))}
-            </div>
+          <div className="flex items-center justify-center gap-3">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--surface)]/90 text-[color:var(--muted)] transition hover:scale-105 hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
+            >
+              <GithubLogo size={20} weight="regular" aria-hidden="true" />
+            </a>
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--surface)]/90 text-[color:var(--muted)] transition hover:scale-105 hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
+            >
+              <LinkedinLogo size={20} weight="regular" aria-hidden="true" />
+            </a>
+            <a
+              href="mailto:tien.huynhlt.tn@gmail.com"
+              aria-label="Email"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--surface)]/90 text-[color:var(--muted)] transition hover:scale-105 hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
+            >
+              <EnvelopeSimple size={20} weight="regular" aria-hidden="true" />
+            </a>
           </div>
-        </aside>
+
+          <a
+            href="#about"
+            aria-label="Scroll to About"
+            onClick={(event) => scrollToId(event, 'about')}
+            className="mt-4 inline-flex items-center justify-center rounded-full p-2 text-[color:var(--muted)] transition hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
+          >
+            <ArrowDown
+              size={22}
+              weight="regular"
+              aria-hidden="true"
+              className="animate-bounce"
+            />
+          </a>
+        </div>
       </div>
     </Section>
   )
