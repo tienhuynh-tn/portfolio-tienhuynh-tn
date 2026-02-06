@@ -6,6 +6,7 @@ type SectionProps = {
     title?: string
     variant?: 'default' | 'hero'
     children: ReactNode
+    className?: string
 }
 
 function Section({ id, title, variant = 'default', children }: SectionProps) {

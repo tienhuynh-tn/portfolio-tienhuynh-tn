@@ -827,15 +827,17 @@ p {
   font-size: 0.9rem;
 }
 
+/* default: hidden */
 .reveal {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  transition-delay: var(--d, 0ms);
+  transition:
+          opacity 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+          transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
 }
 
-.reveal--visible {
+.reveal.reveal--visible {
   opacity: 1;
   transform: translateY(0);
 }
