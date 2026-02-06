@@ -1,43 +1,51 @@
 import Section from '../components/layout/Section'
-import Container from '../components/layout/Container'
 
 function Contact() {
   return (
-      <Section id="contact" title="Contact">
-        <Container>
-          <div className="contact">
-            <p className="contactText">
-              Interested in collaborating or discussing backend systems? Reach out anytime.
-            </p>
+    <Section id="contact" title="Contact">
+      <div className="contact">
+        <p className="contactText">
+          Interested in collaborating or discussing backend systems? Reach out
+          anytime.
+        </p>
 
-            <div className="contactLinks">
-              <a href="mailto:tien.huynhlt.tn@gmail.com" className="cardLink">
-                Email
-              </a>
-              <a href="https://github.com/tienhuynh-tn" className="cardLink" target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              <a href="https://www.linkedin.com/in/tienhuynh-tn/" className="cardLink" target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-            </div>
+        <div className="contactLinks">
+          <a href="mailto:tien.huynhlt.tn@gmail.com" className="cardLink">
+            Email
+          </a>
+          <a
+            href="https://github.com/tienhuynh-tn"
+            className="cardLink"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/tienhuynh-tn/"
+            className="cardLink"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+        </div>
 
-            <div className="contactFooter">
-              © 2026 Tien Huynh - Fairy (
-              <a
-                  href="https://github.com/tienhuynh-tn"
-                  className="contactFooterLink"
-                  target="_blank"
-                  rel="noreferrer"
-              >
-                tienhuynh-tn
-              </a>
-              ). Built with 💚 using React, TypeScript, and a little help from ChatGPT &amp; Codex - plus many
-              late nights learning and milktea.
-            </div>
-          </div>
-        </Container>
-      </Section>
+        <div className="contactFooter">
+          © 2026 Tien Huynh - Fairy (
+          <a
+            href="https://github.com/tienhuynh-tn"
+            className="contactFooterLink"
+            target="_blank"
+            rel="noreferrer"
+          >
+            tienhuynh-tn
+          </a>
+          ). Built with 💚 using React, TypeScript, and a little help from
+          ChatGPT &amp; Codex - plus many late nights learning and milktea.
+        </div>
+      </div>
+    </Section>
   )
 }
 

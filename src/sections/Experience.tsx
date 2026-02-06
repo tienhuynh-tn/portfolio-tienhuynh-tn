@@ -1,5 +1,4 @@
 import Section from '../components/layout/Section'
-import Container from '../components/layout/Container'
 
 const EXPERIENCE_ITEMS = [
   {
@@ -36,26 +35,24 @@ const EXPERIENCE_ITEMS = [
 function Experience() {
   return (
     <Section id="experience" title="Experience">
-      <Container>
-        <div className="list">
-          {EXPERIENCE_ITEMS.map((item) => (
-            <article key={`${item.role}-${item.company}`} className="item">
-              <div className="itemHeader">
-                <div>
-                  <h3 className="itemTitle">{item.role}</h3>
-                  <p className="itemMeta">{item.company}</p>
-                </div>
-                <span className="itemDates">{item.dates}</span>
+      <div className="list">
+        {EXPERIENCE_ITEMS.map((item) => (
+          <article key={`${item.role}-${item.company}`} className="item">
+            <div className="itemHeader">
+              <div>
+                <h3 className="itemTitle">{item.role}</h3>
+                <p className="itemMeta">{item.company}</p>
               </div>
-              <ul className="bullets">
-                {item.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-      </Container>
+              <span className="itemDates">{item.dates}</span>
+            </div>
+            <ul className="bullets">
+              {item.bullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
     </Section>
   )
 }

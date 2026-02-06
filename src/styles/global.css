@@ -13,6 +13,7 @@
   /* Spacing */
   --space-container-x: clamp(16px, 4vw, 48px);
   --space-section-y: clamp(48px, 8vw, 96px);
+  --space-section-hero-y: clamp(72px, 10vw, 140px);
 
   /* Radius */
   --radius-sm: 6px;
@@ -27,6 +28,9 @@
   --font-size-h1: clamp(2.25rem, 4vw, 3rem);
   --font-size-h2: clamp(1.5rem, 2.2vw, 2.125rem);
   --font-size-h3: clamp(1.25rem, 1.8vw, 1.5rem);
+
+  /* Layout */
+  --container-max-width: 1200px;
 }
 
 * {
@@ -52,26 +56,9 @@ main {
   display: block;
 }
 
-section {
-  padding: var(--space-section-y) 0;
-}
-
-.section {
-  padding: var(--space-section-y) 0;
-}
-
-.sectionTitle {
-  font-size: var(--font-size-h2);
-  margin-bottom: 16px;
-}
-
-.sectionBody {
-  display: block;
-}
-
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--space-container-x);
 }
@@ -97,6 +84,27 @@ h2 {
 
 h3 {
   font-size: var(--font-size-h3);
+}
+
+.section {
+  padding: var(--space-section-y) 0;
+}
+
+.section--hero {
+  padding: var(--space-section-hero-y) 0;
+}
+
+.sectionHeader {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-h2);
+  margin: 0;
+}
+
+.sectionBody {
+  display: block;
 }
 
 a {
@@ -145,7 +153,6 @@ p {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 32px 0;
 }
 
 .heroTitle {
@@ -206,20 +213,20 @@ p {
   color: var(--color-text);
 }
 
-.grid {
+.projectsGrid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 20px;
 }
 
-@media (min-width: 768px) {
-  .grid {
+@media (min-width: 601px) {
+  .projectsGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1024px) {
-  .grid {
+@media (min-width: 901px) {
+  .projectsGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -358,3 +365,20 @@ p {
   text-decoration-thickness: 2px;
 }
 
+@media (max-width: 900px) {
+  .section {
+    padding: 56px 0;
+  }
+
+  .section--hero {
+    padding: 80px 0;
+  }
+
+  .sectionHeader {
+    margin-bottom: 18px;
+  }
+
+  .heroSummary {
+    max-width: 100%;
+  }
+}
