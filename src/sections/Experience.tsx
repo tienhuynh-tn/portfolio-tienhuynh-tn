@@ -34,7 +34,7 @@ const EXPERIENCE_ITEMS = [
 ]
 
 function Experience() {
-  const revealRef = useRevealOnScroll()
+  const revealRef = useRevealOnScroll<HTMLDivElement>()
 
   return (
     <Section id="experience" title="Experience">

@@ -4,7 +4,7 @@ import { projects } from '../data/projects'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
 
 function Projects() {
-  const revealRef = useRevealOnScroll()
+  const revealRef = useRevealOnScroll<HTMLDivElement>()
 
   return (
     <Section id="projects" title="Projects">

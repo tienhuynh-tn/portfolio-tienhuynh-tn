@@ -2,7 +2,7 @@ import Section from '../components/layout/Section'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
 
 function Contact() {
-  const revealRef = useRevealOnScroll()
+  const revealRef = useRevealOnScroll<HTMLDivElement>()
 
   return (
     <Section id="contact" title="Contact">

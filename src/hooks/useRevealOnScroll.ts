@@ -5,8 +5,8 @@ type RevealOptions = {
   rootMargin?: string
 }
 
-function useRevealOnScroll(options: RevealOptions = {}) {
-  const containerRef = useRef<HTMLElement | null>(null)
+function useRevealOnScroll<T extends HTMLElement>(options: RevealOptions = {}) {
+  const containerRef = useRef<T | null>(null)
   const { threshold = 0.15, rootMargin = '0px 0px -10% 0px' } = options
 
   useEffect(() => {
