@@ -37,18 +37,10 @@ function ThemeToggle() {
       setTheme(event.matches ? 'dark' : 'light')
     }
 
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handler)
-    } else {
-      mediaQuery.addListener(handler)
-    }
+    mediaQuery.addEventListener('change', handler)
 
     return () => {
-      if (mediaQuery.addEventListener) {
-        mediaQuery.removeEventListener('change', handler)
-      } else {
-        mediaQuery.removeListener(handler)
-      }
+      mediaQuery.removeEventListener('change', handler)
     }
   }, [hasPreference])
 

@@ -144,6 +144,7 @@ h3 {
 
 .section {
   padding: var(--space-section-y) 0;
+  scroll-margin-top: 84px;
 }
 
 .section--hero {
@@ -221,8 +222,8 @@ p {
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: #ffffff;
-  border-bottom: 1px solid var(--border);
+  background-color: var(--bg);
+  border: none;
 }
 
 :root[data-theme='dark'] .navbar {
@@ -231,23 +232,42 @@ p {
 }
 
 .navbarInner {
-  min-height: var(--navbar-height);
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 16px;
 }
 
-.navbarBrand {
+.navBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--text);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.navBrand:hover,
+.navBrand:focus-visible {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.brandMark {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.brandName {
+  font-weight: 600;
 }
 
 .navbarLinks {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   color: var(--muted);
 }
 
@@ -259,34 +279,21 @@ p {
   position: relative;
   color: var(--muted);
   font-weight: 500;
-  padding: 6px 10px;
-  border-radius: 999px;
-  transition: color 0.2s var(--ease-out),
-    background-color 0.2s var(--ease-out);
+  padding: 4px 2px;
+  border-radius: 0;
+  transition: color 0.2s var(--ease-out);
+  text-decoration: none;
 }
 
-.navLink::after {
-  content: '';
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 4px;
-  height: 2px;
-  background: var(--primary);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.2s var(--ease-out);
-}
-
-.navLink:hover::after,
-.navLink:focus-visible::after,
-.navLink--active::after {
-  transform: scaleX(1);
+.navLink:hover,
+.navLink:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 2px;
 }
 
 .navLink--active {
-  color: var(--text);
-  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary) !important;
 }
 
 .themeToggle {
@@ -707,10 +714,11 @@ p {
     grid-template-columns: 1fr;
   }
 
-  .navbarInner {
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 12px 0;
+  @media (max-width: 900px) {
+    .navbarInner {
+      flex-wrap: wrap;
+      padding: 12px 0;
+    }
   }
 }
 
@@ -736,6 +744,11 @@ p {
     justify-content: flex-start;
     gap: 12px;
     flex-wrap: wrap;
+  }
+
+  .navbarInner {
+    min-height: 52px;
+    gap: 10px;
   }
 
   .projectsGrid {
