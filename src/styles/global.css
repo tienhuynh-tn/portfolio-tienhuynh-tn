@@ -625,38 +625,206 @@ p {
   color: var(--muted);
 }
 
-.contact {
+.contactSection {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 40px);
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.contactInfo {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
 }
 
-.contactText {
+.contactHeading {
+  font-size: var(--font-size-h3);
+  margin-bottom: 8px;
+}
+
+.contactCopy {
   color: var(--muted);
-  max-width: 640px;
+  max-width: 560px;
 }
 
-.contactLinks {
+.contactDetails {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.contactDetail {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactLabel {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.contactLink {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.contactValue {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.contactWhyTitle {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.contactWhyList {
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+}
+
+.contactPanel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 3vw, 28px);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
-.contactFooter {
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formField label {
+  font-weight: 500;
+  color: var(--text-strong);
+}
+
+.formControl {
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 12px 14px;
+  color: var(--text);
+  font: inherit;
+  transition: border-color 0.18s var(--ease-out),
+    box-shadow 0.18s var(--ease-out);
+}
+
+.formControl::placeholder {
+  color: var(--muted);
+}
+
+.formControl:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-color: var(--primary);
+}
+
+.formControlTextarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.contactSubmit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.contactSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.buttonIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.formHint {
   color: var(--muted);
   font-size: 0.9rem;
 }
 
-.contactFooterLink {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.contactFooterArea {
+  border-top: 1px solid var(--border);
+  padding-top: clamp(18px, 3vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.contactFooterLink:hover {
-  text-decoration-thickness: 2px;
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footerLink {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  transition: transform 0.18s var(--ease-out),
+    box-shadow 0.18s var(--ease-out),
+    border-color 0.18s var(--ease-out),
+    color 0.18s var(--ease-out);
+}
+
+.footerLink svg {
+  width: 20px;
+  height: 20px;
+}
+
+.footerLink:hover,
+.footerLink:focus-visible {
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-2px);
+}
+
+.contactFooterCopy {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .reveal {
@@ -722,6 +890,12 @@ p {
   }
 }
 
+@media (min-width: 900px) {
+  .contactGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 600px) {
   h1 {
     font-size: clamp(2.1rem, 9vw, 2.7rem);
@@ -766,6 +940,14 @@ p {
 
   p {
     line-height: 1.75;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .contactSubmit {
+    width: 100%;
   }
 }
 
