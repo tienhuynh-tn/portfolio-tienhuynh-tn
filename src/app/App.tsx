@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import Navbar from '../components/layout/Navbar'
+import ScrollToTop from '../components/layout/ScrollToTop'
 import { NAV_ITEMS, type NavItemId } from './navItems'
 import Activity from '../sections/Activity'
 import Awards from '../sections/Awards'
@@ -32,6 +33,7 @@ function App() {
           <div key={item.id}>{SECTION_COMPONENTS[item.id]}</div>
         ))}
       </main>
+      <ScrollToTop />
     </>
   )
 }
