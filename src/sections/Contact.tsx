@@ -1,9 +1,12 @@
 import Section from '../components/layout/Section'
+import useRevealOnScroll from '../hooks/useRevealOnScroll'
 
 function Contact() {
+  const revealRef = useRevealOnScroll()
+
   return (
     <Section id="contact" title="Contact">
-      <div className="contact">
+      <div className="contact reveal" ref={revealRef}>
         <p className="contactText">
           Interested in collaborating or discussing backend systems? Reach out
           anytime.

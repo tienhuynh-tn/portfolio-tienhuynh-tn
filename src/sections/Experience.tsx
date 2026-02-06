@@ -1,4 +1,5 @@
 import Section from '../components/layout/Section'
+import useRevealOnScroll from '../hooks/useRevealOnScroll'
 
 const EXPERIENCE_ITEMS = [
   {
@@ -33,11 +34,17 @@ const EXPERIENCE_ITEMS = [
 ]
 
 function Experience() {
+  const revealRef = useRevealOnScroll()
+
   return (
     <Section id="experience" title="Experience">
-      <div className="list">
-        {EXPERIENCE_ITEMS.map((item) => (
-          <article key={`${item.role}-${item.company}`} className="item">
+      <div className="list" ref={revealRef}>
+        {EXPERIENCE_ITEMS.map((item, index) => (
+          <article
+            key={`${item.role}-${item.company}`}
+            className="item reveal"
+            style={{ ['--reveal-delay' as string]: `${index * 80}ms` }}
+          >
             <div className="itemHeader">
               <div>
                 <h3 className="itemTitle">{item.role}</h3>
