@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Moon, Sun } from '@phosphor-icons/react'
 
 const STORAGE_KEY = 'theme'
 const MEDIA_QUERY = '(prefers-color-scheme: dark)'
@@ -61,7 +62,13 @@ function ThemeToggle() {
     >
       <span className="themeToggleLabel">DARK</span>
       <span className="themeToggleSwitch" aria-hidden="true">
-        <span className="themeToggleThumb">{theme === 'dark' ? '☾' : '☀'}</span>
+        <span className="themeToggleThumb">
+          {theme === 'dark' ? (
+            <Moon size={12} weight="regular" aria-hidden="true" />
+          ) : (
+            <Sun size={12} weight="regular" aria-hidden="true" />
+          )}
+        </span>
       </span>
       <span className="themeToggleLabel">LIGHT</span>
     </button>

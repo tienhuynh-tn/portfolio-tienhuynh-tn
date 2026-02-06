@@ -16,6 +16,7 @@ type SectionMetrics = {
 
 function Navbar() {
   const [activeId, setActiveId] = useState<NavItemId>('home')
+  const navRef = useRef<HTMLElement | null>(null)
   const ignoreObserverUntilRef = useRef(0)
   const rafIdRef = useRef(0)
   const lockTimeoutRef = useRef<number | null>(null)
@@ -77,15 +78,16 @@ function Navbar() {
       }
 
       const viewportBottom = window.scrollY + window.innerHeight
-      const documentBottom = document.documentElement.scrollHeight
-      if (viewportBottom >= documentBottom - 4) {
+      const documentBottom = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      )
+      if (viewportBottom >= documentBottom - 2) {
         setActiveId('contact')
         return
       }
 
-      const headerHeight =
-        document.querySelector<HTMLElement>('.navbar')?.getBoundingClientRect()
-          .height ?? 100
+      const headerHeight = navRef.current?.getBoundingClientRect().height ?? 96
       const spyLine = headerHeight + 20
 
       let activeCandidate: NavItemId = 'home'
@@ -129,12 +131,14 @@ function Navbar() {
     sections.forEach((section) => observer.observe(section.element))
     window.addEventListener('scroll', scheduleFallback, { passive: true })
     window.addEventListener('resize', scheduleFallback)
+    window.addEventListener('hashchange', scheduleFallback)
     scheduleFallback()
 
     return () => {
       observer.disconnect()
       window.removeEventListener('scroll', scheduleFallback)
       window.removeEventListener('resize', scheduleFallback)
+      window.removeEventListener('hashchange', scheduleFallback)
       if (rafIdRef.current) {
         window.cancelAnimationFrame(rafIdRef.current)
         rafIdRef.current = 0
@@ -149,9 +153,11 @@ function Navbar() {
   const handleNavClick = (id: NavItemId) => {
     setActiveId(id)
     ignoreObserverUntilRef.current = performance.now() + 300
+
     if (lockTimeoutRef.current !== null) {
       window.clearTimeout(lockTimeoutRef.current)
     }
+
     lockTimeoutRef.current = window.setTimeout(() => {
       ignoreObserverUntilRef.current = 0
       lockTimeoutRef.current = null
@@ -159,29 +165,62 @@ function Navbar() {
   }
 
   return (
-    <header className="navbar">
-      <div className="container navbarInner">
-        <a href="#home" className="navBrand" aria-label="Go to top">
+    <header ref={navRef} className="navbar">
+      <div className="container flex items-center gap-3 py-2">
+        <a href="#home" className="navBrand shrink-0" aria-label="Go to Home">
           <span className="brandMark">&lt;</span>
-          <span className="brandName">Tien Huynh</span>
+          <span className="brandName hidden sm:inline">Tien Huynh</span>
           <span className="brandMark">/&gt;</span>
         </a>
 
-        <nav className="navbarLinks" aria-label="Primary">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={`navLink ${activeId === item.id ? 'navLink--active' : ''}`}
-              aria-current={activeId === item.id ? 'page' : undefined}
-              onClick={() => handleNavClick(item.id)}
-            >
-              {item.label}
-            </a>
-          ))}
+        <nav
+          className="flex flex-1 items-center justify-start gap-1 overflow-x-auto py-1 sm:justify-center"
+          aria-label="Primary"
+        >
+          {NAV_ITEMS.map((item) => {
+            const isActive = activeId === item.id
+            const Icon = item.Icon
+
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                aria-label={item.label}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={() => handleNavClick(item.id)}
+                className={`group inline-flex shrink-0 items-center rounded-full px-2 py-1.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] ${
+                  isActive
+                    ? 'text-[color:var(--primary)]'
+                    : 'text-[color:var(--muted)] hover:text-[color:var(--primary)]'
+                }`}
+              >
+                <span
+                  className={`inline-flex h-9 w-9 items-center justify-center transition-transform duration-200 group-hover:scale-105 group-focus-visible:scale-105 ${isActive ? 'scale-105' : ''}`}
+                >
+                  <Icon
+                    size={21}
+                    weight="regular"
+                    aria-hidden="true"
+                  />
+                </span>
+
+                <span
+                  className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
+                    isActive
+                      ? 'ml-2 max-w-36 translate-x-0 font-semibold opacity-100'
+                      : 'ml-0 max-w-0 -translate-x-1 opacity-0 group-hover:ml-2 group-hover:max-w-36 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-36 group-focus-visible:translate-x-0 group-focus-visible:opacity-100'
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </a>
+            )
+          })}
         </nav>
 
-        <ThemeToggle />
+        <div className="shrink-0">
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   )
