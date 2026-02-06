@@ -827,6 +827,101 @@ p {
   font-size: 0.9rem;
 }
 
+.aboutTagGrid {
+  justify-items: start;
+}
+
+.aboutTag {
+  color: #1f2937;
+  background: transparent;
+  isolation: isolate;
+  width: 100%;
+  min-height: 42px;
+  justify-content: flex-start;
+  transform: translateY(0) scale(1);
+  transition:
+    transform 240ms var(--ease-out),
+    color 240ms var(--ease-out),
+    box-shadow 240ms var(--ease-out);
+}
+
+.aboutTag::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary) 86%, #ffffff 14%),
+    #38bdf8,
+    #d946ef
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.92;
+  transition: opacity 240ms var(--ease-out), filter 240ms var(--ease-out);
+}
+
+.aboutTagHole {
+  position: absolute;
+  left: 0.72rem;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #1e3a8a;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.aboutTagIcon {
+  color: #334155;
+}
+
+:root[data-theme='dark'] .aboutTag {
+  color: #e2e8f0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+:root[data-theme='dark'] .aboutTagHole {
+  background: #22d3ee;
+  box-shadow: 0 0 0 2px rgba(2, 6, 23, 0.9);
+}
+
+:root[data-theme='dark'] .aboutTagIcon {
+  color: var(--primary);
+}
+
+@media (hover: hover) {
+  .aboutTag:hover,
+  .aboutTag:focus-visible {
+    color: var(--primary);
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+  }
+
+  :root[data-theme='dark'] .aboutTag:hover,
+  :root[data-theme='dark'] .aboutTag:focus-visible {
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.5);
+  }
+
+  .aboutTag:hover::before,
+  .aboutTag:focus-visible::before {
+    opacity: 1;
+    filter: saturate(1.15) brightness(1.08);
+  }
+}
+
+.aboutTag:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
 /* default: hidden */
 .reveal {
   opacity: 0;
@@ -860,6 +955,12 @@ p {
 
   .themeToggleThumb {
     transition: none;
+  }
+
+  .aboutTag:hover,
+  .aboutTag:focus-visible {
+    transform: none;
+    box-shadow: none;
   }
 }
 
