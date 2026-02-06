@@ -233,6 +233,35 @@ p {
   font-weight: 600;
 }
 
+.navLink {
+  position: relative;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLink--active::after {
+  transform: scaleX(1);
+}
+
+.navLink--active {
+  color: var(--color-text);
+}
+
 .themeToggle {
   border-radius: 999px;
   padding: 8px 14px;
