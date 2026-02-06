@@ -1,101 +1,82 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { NAV_ITEMS, type NavItemId } from '../../app/navItems'
 import ThemeToggle from './ThemeToggle'
 
-const SECTIONS = ['projects', 'experience', 'contact'] as const
-
-type SectionId = (typeof SECTIONS)[number]
-type ActiveSection = SectionId | null
+const OBSERVER_OPTIONS: IntersectionObserverInit = {
+  root: null,
+  rootMargin: '-40% 0px -55% 0px',
+  threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+}
 
 function Navbar() {
-  const [activeId, setActiveId] = useState<ActiveSection>(null)
-  const navRef = useRef<HTMLElement | null>(null)
+  const [activeId, setActiveId] = useState<NavItemId>('home')
 
-  useEffect(() => {
-    let rafId = 0
-    let timeoutId: number | null = null
-
-    const updateActive = () => {
-      const navHeight = navRef.current?.getBoundingClientRect().height ?? 56
-      const y = window.scrollY + navHeight + Math.round(window.innerHeight * 0.33)
-
-      const tops = SECTIONS.map((id) => {
-        const el = document.getElementById(id)
-        if (!el) return null
-        // absolute top in document coordinates
-        const top = el.getBoundingClientRect().top + window.scrollY
-        return { id, top }
-      }).filter(Boolean) as Array<{ id: SectionId; top: number }>
-
-      if (tops.length === 0) {
-        setActiveId(null)
-        return
-      }
-
-      tops.sort((a, b) => a.top - b.top)
-
-      // Home zone: trước section đầu tiên
-      if (y < tops[0].top) {
-        setActiveId(null)
-        return
-      }
-
-      // Nếu y nằm trong [tops[i], tops[i+1]) => active = i
-      for (let i = 0; i < tops.length; i++) {
-        const current = tops[i]
-        const next = tops[i + 1]
-
-        if (!next || y < next.top) {
-          setActiveId(current.id)
-          return
-        }
-      }
-
-      setActiveId(null)
-    }
-
-    const onScroll = () => {
-      if (rafId) return
-      rafId = window.requestAnimationFrame(() => {
-        rafId = 0
-        updateActive()
-      })
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    window.addEventListener('hashchange', onScroll)
-    updateActive()
-    timeoutId = window.setTimeout(updateActive, 50)
-
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      window.removeEventListener('hashchange', onScroll)
-      if (rafId) window.cancelAnimationFrame(rafId)
-      if (timeoutId !== null) window.clearTimeout(timeoutId)
-    }
+  const sectionOrder = useMemo(() => {
+    const map = new Map<NavItemId, number>()
+    NAV_ITEMS.forEach((item, index) => map.set(item.id, index))
+    return map
   }, [])
 
+  useEffect(() => {
+    const ratios = new Map<NavItemId, number>()
+    const sectionElements = NAV_ITEMS.map((item) =>
+      document.getElementById(item.id)
+    ).filter(Boolean) as HTMLElement[]
+
+    if (sectionElements.length === 0) return
+
+    const updateActiveSection = () => {
+      const intersecting = NAV_ITEMS.map((item) => ({
+        id: item.id,
+        ratio: ratios.get(item.id) ?? 0,
+      })).filter((entry) => entry.ratio > 0)
+
+      if (intersecting.length === 0) return
+
+      intersecting.sort((a, b) => {
+        if (b.ratio !== a.ratio) return b.ratio - a.ratio
+        return (sectionOrder.get(a.id) ?? 0) - (sectionOrder.get(b.id) ?? 0)
+      })
+
+      setActiveId(intersecting[0].id)
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.id as NavItemId
+        ratios.set(id, entry.isIntersecting ? entry.intersectionRatio : 0)
+      })
+      updateActiveSection()
+    }, OBSERVER_OPTIONS)
+
+    sectionElements.forEach((section) => observer.observe(section))
+
+    return () => observer.disconnect()
+  }, [sectionOrder])
+
   return (
-    <header className="navbar" ref={navRef}>
+    <header className="navbar">
       <div className="container navbarInner">
-        <a href="#hero" className="navBrand" aria-label="Go to top">
+        <a href="#home" className="navBrand" aria-label="Go to top">
           <span className="brandMark">&lt;</span>
           <span className="brandName">Tien Huynh</span>
           <span className="brandMark">/&gt;</span>
         </a>
+
         <nav className="navbarLinks" aria-label="Primary">
-          {SECTIONS.map((id) => (
+          {NAV_ITEMS.map((item) => (
             <a
-              key={id}
-              href={`#${id}`}
-              className={`navLink ${activeId === id ? 'navLink--active' : ''}`}
-              aria-current={activeId === id ? 'page' : undefined}
+              key={item.id}
+              href={`#${item.id}`}
+              className={`navLink ${activeId === item.id ? 'navLink--active' : ''}`}
+              aria-current={activeId === item.id ? 'page' : undefined}
+              onClick={() => setActiveId(item.id)}
             >
-              {id.charAt(0).toUpperCase() + id.slice(1)}
+              {item.label}
             </a>
           ))}
         </nav>
+
         <ThemeToggle />
       </div>
     </header>

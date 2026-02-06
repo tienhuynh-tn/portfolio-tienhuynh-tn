@@ -6,7 +6,7 @@ const STACK = ['Java', 'Spring Boot', 'SQL', 'AWS']
 
 function Hero() {
   return (
-    <Section id="hero" variant="hero">
+    <Section id="home" variant="hero">
       <div className="heroGrid">
         <div className="hero">
           <h1 className="heroTitle">Huỳnh Tiên (Fairy)</h1>
