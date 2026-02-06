@@ -173,6 +173,7 @@ button,
   border-radius: var(--radius-md);
   padding: 10px 16px;
   cursor: pointer;
+  min-height: 44px;
   transition: transform 0.18s var(--ease-out),
     box-shadow 0.18s var(--ease-out),
     border-color 0.18s var(--ease-out),
@@ -322,6 +323,7 @@ p {
   text-decoration: none;
   font-weight: 600;
   background-image: none;
+  min-height: 44px;
   transition: transform 0.18s var(--ease-out),
     box-shadow 0.18s var(--ease-out),
     border-color 0.18s var(--ease-out),
@@ -566,10 +568,63 @@ p {
 }
 
 @media (max-width: 600px) {
+  h1 {
+    font-size: clamp(2.1rem, 9vw, 2.7rem);
+  }
+
+  h2 {
+    font-size: clamp(1.4rem, 6.2vw, 1.8rem);
+  }
+
+  .section {
+    padding: 44px 0;
+  }
+
+  .section--hero {
+    padding: 64px 0;
+  }
+
   .navbarLinks {
     width: 100%;
     justify-content: flex-start;
     gap: 12px;
     flex-wrap: wrap;
+  }
+
+  .projectsGrid {
+    gap: 24px;
+  }
+
+  .list {
+    gap: 24px;
+  }
+
+  .card,
+  .item {
+    padding: 20px;
+  }
+
+  p {
+    line-height: 1.75;
+  }
+}
+
+@media (hover: none) {
+  a:hover,
+  a:focus-visible {
+    background-size: 0 1px;
+  }
+
+  .btn:hover,
+  .button:hover,
+  .themeToggle:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card:hover,
+  .card:focus-within {
+    transform: none;
+    box-shadow: var(--shadow-card);
   }
 }
