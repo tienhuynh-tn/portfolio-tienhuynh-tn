@@ -82,13 +82,9 @@ function Contact() {
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--border)] bg-slate-100 text-[color:var(--primary)] dark:bg-transparent">
-                  <EnvelopeSimple
-                    size={22}
-                    weight="regular"
-                    aria-hidden="true"
-                  />
+              <div className="group flex items-start gap-3">
+                <span className="mt-0.5 inline-flex h-10 w-10 items-center justify-center text-[color:var(--muted)] transition-colors group-hover:text-[color:var(--primary)]">
+                  <EnvelopeSimple size={20} weight="regular" aria-hidden="true" />
                 </span>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs uppercase tracking-widest text-[color:var(--muted)]">
@@ -96,16 +92,16 @@ function Contact() {
                   </span>
                   <a
                     href="mailto:tien.huynhlt.tn@gmail.com"
-                    className="font-semibold text-[color:var(--primary)] hover:opacity-90"
+                    className="font-semibold text-[color:var(--primary)] hover:opacity-90 focus-visible:outline-none focus-visible:text-[color:var(--primary)]"
                   >
                     tien.huynhlt.tn@gmail.com
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--border)] bg-slate-100 text-[color:var(--primary)] dark:bg-transparent">
-                  <MapPin size={22} weight="regular" aria-hidden="true" />
+              <div className="group flex items-start gap-3">
+                <span className="mt-0.5 inline-flex h-10 w-10 items-center justify-center text-[color:var(--muted)] transition-colors group-hover:text-[color:var(--primary)]">
+                  <MapPin size={20} weight="regular" aria-hidden="true" />
                 </span>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs uppercase tracking-widest text-[color:var(--muted)]">
@@ -195,7 +191,7 @@ function Contact() {
               className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[color:var(--primary)] px-4 py-2 font-semibold text-[color:var(--primaryText)] transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <span>Send Message</span>
-              <PaperPlaneTilt size={18} weight="regular" aria-hidden="true" />
+              <PaperPlaneTilt size={20} weight="regular" aria-hidden="true" />
             </button>
 
             <p className="text-sm text-[color:var(--muted)]" aria-live="polite">
@@ -206,7 +202,7 @@ function Contact() {
           </form>
         </div>
 
-        <div className="mt-10 border-t border-[color:var(--border)] pt-6">
+        <div className="mt-10 border-t border-[color:var(--border)] pt-6 pb-2">
           <div className="flex items-center justify-center gap-3">
             {[
               {
@@ -231,7 +227,7 @@ function Contact() {
                 target={item.href.startsWith('http') ? '_blank' : undefined}
                 rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
                 aria-label={item.label}
-                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[color:var(--border)] text-[color:var(--muted)] transition hover:-translate-y-0.5 hover:border-[color:var(--primary)] hover:text-[color:var(--primary)]"
+                className="inline-flex h-10 w-10 items-center justify-center text-[color:var(--muted)] transition hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] focus-visible:text-[color:var(--primary)]"
               >
                 <item.Icon size={20} weight="regular" aria-hidden="true" />
               </a>
