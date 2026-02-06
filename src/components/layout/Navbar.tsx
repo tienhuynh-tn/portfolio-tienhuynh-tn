@@ -49,6 +49,7 @@ function Navbar() {
               key={id}
               href={`#${id}`}
               className={activeId === id ? 'navLink navLink--active' : 'navLink'}
+              aria-current={activeId === id ? 'page' : undefined}
             >
               {id.charAt(0).toUpperCase() + id.slice(1)}
             </a>

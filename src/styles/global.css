@@ -27,9 +27,9 @@
   --shadow-card-hover: 0 16px 36px rgba(17, 19, 22, 0.14);
 
   /* Typography */
-  --font-size-base: 16px;
-  --font-size-h1: clamp(2.5rem, 4.4vw, 3.4rem);
-  --font-size-h2: clamp(1.6rem, 2.4vw, 2.2rem);
+  --font-size-base: clamp(16px, 1.1vw, 18px);
+  --font-size-h1: clamp(2.2rem, 4vw, 3.2rem);
+  --font-size-h2: clamp(1.4rem, 2.2vw, 1.9rem);
   --font-size-h3: clamp(1.2rem, 1.6vw, 1.5rem);
   --line-height-body: 1.7;
   --line-height-heading: 1.15;
@@ -40,6 +40,9 @@
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Rhythm */
+  --space-block: clamp(14px, 2vw, 24px);
 }
 
 [data-theme='dark'] {
@@ -109,6 +112,7 @@ h6 {
   font-weight: 700;
   line-height: var(--line-height-heading);
   letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--color-text) 96%, black);
 }
 
 h1 {
@@ -132,7 +136,7 @@ h3 {
 }
 
 .sectionHeader {
-  margin-bottom: 28px;
+  margin-bottom: clamp(20px, 2vw, 28px);
 }
 
 .sectionTitle {
@@ -145,7 +149,7 @@ h3 {
 }
 
 .sectionBody > * + * {
-  margin-top: 20px;
+  margin-top: var(--space-block);
 }
 
 a {
@@ -191,7 +195,7 @@ p {
 }
 
 .text-muted {
-  color: var(--color-text-muted);
+  color: color-mix(in srgb, var(--color-text-muted) 92%, transparent);
 }
 
 .surface {
@@ -206,8 +210,8 @@ p {
   top: 0;
   z-index: 10;
   backdrop-filter: blur(12px);
-  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
 }
 
 .navbarInner {
@@ -215,18 +219,19 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
 }
 
 .navbarBrand {
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--color-text);
 }
 
 .navbarLinks {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   color: var(--color-text-muted);
 }
 
@@ -238,18 +243,22 @@ p {
   position: relative;
   color: var(--color-text-muted);
   font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
 }
 
 .navLink::after {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
   height: 2px;
   background: var(--color-primary);
   transform: scaleX(0);
-  transform-origin: left;
+  transform-origin: center;
   transition: transform 0.2s var(--ease-out);
 }
 
@@ -261,6 +270,7 @@ p {
 
 .navLink--active {
   color: var(--color-text);
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
 
 .themeToggle {
@@ -277,6 +287,13 @@ p {
   gap: 18px;
 }
 
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(20px, 4vw, 40px);
+  align-items: start;
+}
+
 .heroTitle {
   font-size: var(--font-size-h1);
 }
@@ -290,6 +307,41 @@ p {
 .heroSummary {
   max-width: 720px;
   color: var(--color-text);
+}
+
+.heroPanel {
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-border) 85%, var(--color-text));
+  border-radius: var(--radius-lg);
+  padding: clamp(18px, 2.4vw, 28px);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.heroBullets {
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--color-text-muted);
+}
+
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-muted);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
 }
 
 .badgeRow {
@@ -319,7 +371,7 @@ p {
   display: inline-block;
   padding: 10px 18px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+  border: 1px solid color-mix(in srgb, var(--color-border) 85%, var(--color-text));
   text-decoration: none;
   font-weight: 600;
   background-image: none;
@@ -338,7 +390,7 @@ p {
 }
 
 .btnSecondary {
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--color-bg));
   color: var(--color-text);
 }
 
@@ -377,13 +429,13 @@ p {
 
 .card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid color-mix(in srgb, var(--color-border) 85%, var(--color-text));
   border-radius: var(--radius-lg);
-  padding: 22px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  box-shadow: var(--shadow-card);
+  gap: 16px;
+  box-shadow: 0 10px 24px rgba(17, 19, 22, 0.08);
   transition: border-color 0.2s var(--ease-out),
     box-shadow 0.2s var(--ease-out),
     transform 0.2s var(--ease-out);
@@ -394,6 +446,39 @@ p {
   border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
   box-shadow: var(--shadow-card-hover);
   transform: translateY(-4px);
+}
+
+.projectCard {
+  height: 100%;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cardIcon {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-accent) 75%, var(--color-primary));
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.cardType {
+  font-weight: 600;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
 }
 
 .cardTitle {
@@ -424,6 +509,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  margin-top: auto;
 }
 
 .cardLink {
@@ -560,6 +646,10 @@ p {
     max-width: 100%;
   }
 
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+
   .navbarInner {
     flex-wrap: wrap;
     gap: 12px;
@@ -626,5 +716,14 @@ p {
   .card:focus-within {
     transform: none;
     box-shadow: var(--shadow-card);
+  }
+}
+
+@media (hover: hover) {
+  .card:hover,
+  .card:focus-within {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+    box-shadow: var(--shadow-card-hover);
   }
 }
