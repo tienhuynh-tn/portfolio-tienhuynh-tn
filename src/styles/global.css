@@ -78,10 +78,15 @@ html {
   background: var(--bg) !important;
   background-image: none !important;
   overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
   min-height: 100vh;
+  height: auto;
   background: var(--bg) !important;
   background-image: none !important;
   color: var(--text);
@@ -89,6 +94,17 @@ body {
   line-height: var(--line-height-body);
   font-weight: 400;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  overflow-y: visible;
+  width: 100%;
+  max-width: 100%;
+}
+
+#root {
+  min-height: 100vh;
+  overflow: visible;
+  width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
 }
 
@@ -108,6 +124,10 @@ main,
 
 main {
   display: block;
+  overflow: visible;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .container {
@@ -170,6 +190,10 @@ h3 {
   margin-top: var(--space-block);
 }
 
+.homeAnchor {
+  scroll-margin-top: 92px;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -228,6 +252,7 @@ p {
   background-color: var(--bg);
   border: none;
   width: 100%;
+  max-width: 100%;
   overflow-x: clip;
   transform: translateY(0);
   opacity: 1;
@@ -1262,6 +1287,10 @@ p {
 
   .section {
     padding: 44px 0;
+  }
+
+  .homeAnchor {
+    scroll-margin-top: 80px;
   }
 
   .section--hero {

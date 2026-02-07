@@ -40,6 +40,22 @@ function Navbar() {
     return order
   }, [])
 
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id)
+    if (!section) return
+
+    const heading = section.querySelector<HTMLElement>('h1, h2, h3')
+    const target = heading ?? section
+    const topBar = navRef.current?.querySelector<HTMLElement>('.navbarShell')
+    const headerHeight = topBar?.getBoundingClientRect().height ?? 72
+    const currentTop = window.pageYOffset || window.scrollY
+    const targetTop = target.getBoundingClientRect().top + currentTop
+    const nextTop = Math.max(targetTop - (headerHeight + 12), 0)
+
+    window.scrollTo({ top: nextTop, behavior: 'smooth' })
+    window.history.replaceState(null, '', `#${id}`)
+  }
+
   useEffect(() => {
     const sections = NAV_ITEMS.map((item) => {
       const element = document.getElementById(item.id)
@@ -163,6 +179,39 @@ function Navbar() {
   }, [sectionOrder])
 
   useEffect(() => {
+    const hash = window.location.hash.replace('#', '')
+    if (!hash) return
+
+    window.requestAnimationFrame(() => {
+      if (hash === 'home') {
+        window.scrollTo({ top: 0, behavior: 'auto' })
+        return
+      }
+      scrollToSection(hash)
+    })
+  }, [])
+
+  useEffect(() => {
+    const root = document.documentElement
+    console.log('[overflow-check]', {
+      scrollWidth: root.scrollWidth,
+      clientWidth: root.clientWidth,
+    })
+    const offenders = Array.from(document.querySelectorAll<HTMLElement>('*'))
+      .filter((el) => el.scrollWidth > root.clientWidth)
+      .slice(0, 10)
+      .map((el) => ({
+        tag: el.tagName,
+        id: el.id,
+        className: el.className,
+        scrollWidth: el.scrollWidth,
+      }))
+    if (offenders.length > 0) {
+      console.log('[overflow-offenders]', offenders)
+    }
+  }, [])
+
+  useEffect(() => {
     const media = window.matchMedia('(max-width: 1199px)')
     const updateCollapsed = (event?: MediaQueryListEvent) => {
       setIsCollapsed(event ? event.matches : media.matches)
@@ -242,18 +291,13 @@ function Navbar() {
     setIsMobileMenuOpen(false)
     ignoreObserverUntilRef.current = performance.now() + 300
 
-    const section = document.getElementById(id)
-    if (section) {
-      const headerHeight = navRef.current?.getBoundingClientRect().height ?? 72
-      const heading = section.querySelector<HTMLElement>('h1, h2, h3')
-      const targetTop = (heading ?? section).getBoundingClientRect().top + window.scrollY
-      const offset = headerHeight + 12
-      window.scrollTo({
-        top: Math.max(targetTop - offset, 0),
-        behavior: 'smooth',
-      })
-      window.history.replaceState(null, '', `#${id}`)
+    if (id === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      window.history.replaceState(null, '', '#home')
+      return
     }
+
+    scrollToSection(id)
 
     if (lockTimeoutRef.current !== null) {
       window.clearTimeout(lockTimeoutRef.current)
@@ -265,6 +309,15 @@ function Navbar() {
     }, 320)
   }
 
+  const handleBrandClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    console.log('[brand-click]', { fired: true, scrollY: window.scrollY })
+    setActiveId('home')
+    setIsMobileMenuOpen(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.history.replaceState(null, '', '#home')
+  }
+
   const activeItem = NAV_ITEMS.find((item) => item.id === activeId) ?? NAV_ITEMS[0]
   const ActiveIcon = activeItem.Icon
 
@@ -274,7 +327,12 @@ function Navbar() {
       className={`navbar ${isNavbarVisible ? 'navbar--visible' : 'navbar--hidden'}`}
     >
       <div className="container navbarShell flex items-center gap-3 py-2">
-        <a href="#home" className="navBrand shrink-0" aria-label="Go to Home">
+        <a
+          href="#home"
+          onClick={handleBrandClick}
+          className="navBrand shrink-0"
+          aria-label="Go to Home"
+        >
           <span className="brandMark">&lt;/&gt;</span>
           <span className="brandName hidden md:inline">Tien Huynh</span>
         </a>
