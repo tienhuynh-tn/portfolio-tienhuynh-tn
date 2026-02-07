@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react'
+import { useEffect, type ReactElement } from 'react'
 import Navbar from '../components/layout/Navbar'
 import ScrollToTop from '../components/layout/ScrollToTop'
 import { NAV_ITEMS, type NavItemId } from './navItems'
@@ -25,6 +25,18 @@ const SECTION_COMPONENTS: Record<NavItemId, ReactElement> = {
 }
 
 function App() {
+  useEffect(() => {
+    // Hard unlock once in case previous runs left inline scroll lock styles.
+    document.documentElement.style.overflow = ''
+    document.body.style.overflow = ''
+    document.body.style.position = ''
+    document.body.style.top = ''
+    document.body.style.left = ''
+    document.body.style.right = ''
+    document.body.style.width = ''
+    document.body.style.height = ''
+  }, [])
+
   return (
     <>
       <Navbar />

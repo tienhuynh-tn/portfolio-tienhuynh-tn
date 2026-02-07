@@ -40,20 +40,13 @@ function Navbar() {
     return order
   }, [])
 
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id)
-    if (!section) return
-
-    const heading = section.querySelector<HTMLElement>('h1, h2, h3')
-    const target = heading ?? section
-    const topBar = navRef.current?.querySelector<HTMLElement>('.navbarShell')
-    const headerHeight = topBar?.getBoundingClientRect().height ?? 72
-    const currentTop = window.pageYOffset || window.scrollY
-    const targetTop = target.getBoundingClientRect().top + currentTop
-    const nextTop = Math.max(targetTop - (headerHeight + 12), 0)
-
-    window.scrollTo({ top: nextTop, behavior: 'smooth' })
+  const scrollToId = (id: string, behavior: ScrollBehavior = 'smooth') => {
+    const element = document.getElementById(id)
+    if (!element) return false
+    const target = element.querySelector<HTMLElement>('h1, h2, h3') ?? element
     window.history.replaceState(null, '', `#${id}`)
+    target.scrollIntoView({ behavior, block: 'start' })
+    return true
   }
 
   useEffect(() => {
@@ -179,36 +172,15 @@ function Navbar() {
   }, [sectionOrder])
 
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '')
-    if (!hash) return
+    const hashId = window.location.hash.replace('#', '')
 
     window.requestAnimationFrame(() => {
-      if (hash === 'home') {
+      if (!hashId || hashId === 'home') {
         window.scrollTo({ top: 0, behavior: 'auto' })
         return
       }
-      scrollToSection(hash)
+      scrollToId(hashId, 'auto')
     })
-  }, [])
-
-  useEffect(() => {
-    const root = document.documentElement
-    console.log('[overflow-check]', {
-      scrollWidth: root.scrollWidth,
-      clientWidth: root.clientWidth,
-    })
-    const offenders = Array.from(document.querySelectorAll<HTMLElement>('*'))
-      .filter((el) => el.scrollWidth > root.clientWidth)
-      .slice(0, 10)
-      .map((el) => ({
-        tag: el.tagName,
-        id: el.id,
-        className: el.className,
-        scrollWidth: el.scrollWidth,
-      }))
-    if (offenders.length > 0) {
-      console.log('[overflow-offenders]', offenders)
-    }
   }, [])
 
   useEffect(() => {
@@ -287,17 +259,18 @@ function Navbar() {
   ) => {
     event.preventDefault()
 
-    setActiveId(id)
-    setIsMobileMenuOpen(false)
-    ignoreObserverUntilRef.current = performance.now() + 300
-
     if (id === 'home') {
+      setActiveId('home')
+      setIsMobileMenuOpen(false)
       window.scrollTo({ top: 0, behavior: 'smooth' })
       window.history.replaceState(null, '', '#home')
       return
     }
 
-    scrollToSection(id)
+    setActiveId(id)
+    setIsMobileMenuOpen(false)
+    ignoreObserverUntilRef.current = performance.now() + 300
+    scrollToId(id)
 
     if (lockTimeoutRef.current !== null) {
       window.clearTimeout(lockTimeoutRef.current)
@@ -311,7 +284,6 @@ function Navbar() {
 
   const handleBrandClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
-    console.log('[brand-click]', { fired: true, scrollY: window.scrollY })
     setActiveId('home')
     setIsMobileMenuOpen(false)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -409,7 +381,9 @@ function Navbar() {
                 aria-label="Toggle navigation menu"
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="navbar-mobile-menu"
-                onClick={() => setIsMobileMenuOpen((open) => !open)}
+                onClick={() => {
+                  setIsMobileMenuOpen((open) => !open)
+                }}
               >
                 <List size={18} weight="bold" aria-hidden="true" />
               </button>

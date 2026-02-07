@@ -4,7 +4,6 @@ import {
   LinkedinLogo,
   EnvelopeSimple,
 } from '@phosphor-icons/react'
-import type { MouseEvent } from 'react'
 import Section from '../components/layout/Section'
 
 const RESUME_PATH = '/resume.pdf'
@@ -13,30 +12,13 @@ const LINKEDIN_URL = 'https://www.linkedin.com/in/tienhuynh-tn/'
 
 const TAGLINE = '3+ years • Java • Spring Boot • SQL • AWS'
 
-function scrollToId(event: MouseEvent<HTMLAnchorElement>, id: string) {
-  event.preventDefault()
-  const section = document.getElementById(id)
-  if (!section) return
-
-  const heading = section.querySelector<HTMLElement>('h1, h2, h3')
-  const target = heading ?? section
-  const navbarShell = document.querySelector<HTMLElement>('.navbarShell')
-  const headerHeight = navbarShell?.getBoundingClientRect().height ?? 72
-  const currentTop = window.pageYOffset || window.scrollY
-  const targetTop = target.getBoundingClientRect().top + currentTop
-  const nextTop = Math.max(targetTop - (headerHeight + 12), 0)
-
-  window.scrollTo({ top: nextTop, behavior: 'smooth' })
-  window.history.replaceState(null, '', `#${id}`)
-}
-
 function Hero() {
   return (
-    <Section id="home-section" variant="hero">
-      <div className="relative isolate overflow-hidden">
+    <Section id="home" variant="hero" className="touch-pan-y">
+      <div className="relative isolate overflow-hidden touch-pan-y">
         <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-[color:var(--primary)]/10 blur-3xl sm:h-80 sm:w-80" />
 
-        <div id="home" className="homeAnchor mx-auto flex max-w-4xl flex-col items-center gap-6 text-center">
+        <div className="homeAnchor mx-auto flex max-w-4xl flex-col items-center gap-6 text-center">
           <p className="inline-flex items-center rounded-full border border-[color:var(--border)] px-4 py-1.5 text-sm font-medium text-[color:var(--muted)]">
             {TAGLINE}
           </p>
@@ -58,7 +40,6 @@ function Hero() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
               href="#projects"
-              onClick={(event) => scrollToId(event, 'projects')}
               className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[color:var(--primary)] px-6 py-2.5 text-sm font-semibold text-[color:var(--primaryText)] transition hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
             >
               View Projects
@@ -103,8 +84,7 @@ function Hero() {
           <a
             href="#about"
             aria-label="Scroll to About"
-            onClick={(event) => scrollToId(event, 'about')}
-            className="mt-4 inline-flex items-center justify-center rounded-full p-2 text-[color:var(--muted)] transition hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
+            className="pointer-events-auto mt-4 inline-flex items-center justify-center rounded-full p-2 text-[color:var(--muted)] transition hover:text-[color:var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)]"
           >
             <ArrowDown
               size={22}
