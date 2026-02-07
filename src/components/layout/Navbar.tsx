@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { List } from '@phosphor-icons/react'
 import { NAV_ITEMS, type NavItemId } from '../../app/navItems'
 import ThemeToggle from './ThemeToggle'
 
@@ -16,7 +17,12 @@ type SectionMetrics = {
 
 function Navbar() {
   const [activeId, setActiveId] = useState<NavItemId>('home')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true)
+  const [isCollapsed, setIsCollapsed] = useState(false)
   const navRef = useRef<HTMLElement | null>(null)
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null)
+  const lastScrollYRef = useRef(0)
   const ignoreObserverUntilRef = useRef(0)
   const rafIdRef = useRef(0)
   const lockTimeoutRef = useRef<number | null>(null)
@@ -150,8 +156,79 @@ function Navbar() {
     }
   }, [sectionOrder])
 
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 1199px)')
+    const updateCollapsed = (event?: MediaQueryListEvent) => {
+      setIsCollapsed(event ? event.matches : media.matches)
+    }
+
+    updateCollapsed()
+    media.addEventListener('change', updateCollapsed)
+
+    return () => {
+      media.removeEventListener('change', updateCollapsed)
+    }
+  }, [])
+
+  useEffect(() => {
+    const threshold = 12
+
+    const handleScrollDirection = () => {
+      const currentY = window.scrollY
+      const lastY = lastScrollYRef.current
+
+      if (currentY <= 10) {
+        setIsNavbarVisible(true)
+        lastScrollYRef.current = currentY
+        return
+      }
+
+      if (currentY > lastY + threshold) {
+        setIsNavbarVisible(false)
+      } else if (currentY < lastY - threshold) {
+        setIsNavbarVisible(true)
+      }
+
+      lastScrollYRef.current = currentY
+    }
+
+    window.addEventListener('scroll', handleScrollDirection, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollDirection)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(target)) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    document.addEventListener('mousedown', handleOutsideClick)
+    document.addEventListener('touchstart', handleOutsideClick)
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('mousedown', handleOutsideClick)
+      document.removeEventListener('touchstart', handleOutsideClick)
+    }
+  }, [isMobileMenuOpen])
+
   const handleNavClick = (id: NavItemId) => {
     setActiveId(id)
+    setIsMobileMenuOpen(false)
     ignoreObserverUntilRef.current = performance.now() + 300
 
     if (lockTimeoutRef.current !== null) {
@@ -164,64 +241,124 @@ function Navbar() {
     }, 320)
   }
 
+  const activeItem = NAV_ITEMS.find((item) => item.id === activeId) ?? NAV_ITEMS[0]
+  const ActiveIcon = activeItem.Icon
+
   return (
-    <header ref={navRef} className="navbar">
-      <div className="container flex items-center gap-3 py-2">
+    <header
+      ref={navRef}
+      className={`navbar ${isNavbarVisible ? 'navbar--visible' : 'navbar--hidden'}`}
+    >
+      <div className="container navbarShell flex items-center gap-3 py-2">
         <a href="#home" className="navBrand shrink-0" aria-label="Go to Home">
-          <span className="brandMark">&lt;</span>
-          <span className="brandName hidden sm:inline">Tien Huynh</span>
-          <span className="brandMark">/&gt;</span>
+          <span className="brandMark">&lt;/&gt;</span>
+          <span className="brandName hidden md:inline">Tien Huynh</span>
         </a>
 
-        <nav
-          className="flex flex-1 items-center justify-start gap-1 overflow-x-auto py-1 sm:justify-center"
-          aria-label="Primary"
-        >
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeId === item.id
-            const Icon = item.Icon
+        {!isCollapsed ? (
+          <>
+            <nav
+              className="navbarDesktopNav flex flex-1 items-center justify-start gap-1 py-1 sm:justify-center"
+              aria-label="Primary"
+            >
+              {NAV_ITEMS.map((item) => {
+                const isActive = activeId === item.id
+                const Icon = item.Icon
 
-            return (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                aria-label={item.label}
-                aria-current={isActive ? 'page' : undefined}
-                onClick={() => handleNavClick(item.id)}
-                className={`group inline-flex shrink-0 items-center rounded-full px-2 py-1.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] ${
-                  isActive
-                    ? 'text-[color:var(--primary)]'
-                    : 'text-[color:var(--muted)] hover:text-[color:var(--primary)]'
-                }`}
+                return (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    aria-label={item.label}
+                    aria-current={isActive ? 'page' : undefined}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`group inline-flex shrink-0 items-center rounded-full px-2 py-1.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] ${
+                      isActive
+                        ? 'text-[color:var(--primary)]'
+                        : 'text-[color:var(--muted)] hover:text-[color:var(--primary)]'
+                    }`}
+                  >
+                    <span
+                      className={`inline-flex h-9 w-9 items-center justify-center transition-transform duration-200 group-hover:scale-105 group-focus-visible:scale-105 ${isActive ? 'scale-105' : ''}`}
+                    >
+                      <Icon
+                        size={21}
+                        weight="regular"
+                        aria-hidden="true"
+                      />
+                    </span>
+
+                    <span
+                      className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
+                        isActive
+                          ? 'ml-2 max-w-36 translate-x-0 font-semibold opacity-100'
+                          : 'ml-0 max-w-0 -translate-x-1 opacity-0 group-hover:ml-2 group-hover:max-w-36 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-36 group-focus-visible:translate-x-0 group-focus-visible:opacity-100'
+                      }`}
+                    >
+                      {item.label}
+                    </span>
+                  </a>
+                )
+              })}
+            </nav>
+
+            <div className="navbarDesktopTheme shrink-0">
+              <ThemeToggle />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="navbarMobileMain">
+              <span
+                className="navbarMobileActive"
+                aria-live="polite"
+                aria-label={`Active section: ${activeItem.label}`}
               >
-                <span
-                  className={`inline-flex h-9 w-9 items-center justify-center transition-transform duration-200 group-hover:scale-105 group-focus-visible:scale-105 ${isActive ? 'scale-105' : ''}`}
-                >
-                  <Icon
-                    size={21}
-                    weight="regular"
-                    aria-hidden="true"
-                  />
-                </span>
+                <ActiveIcon size={18} weight="regular" aria-hidden="true" />
+                <span className="navbarMobileActiveLabel">{activeItem.label}</span>
+              </span>
+            </div>
 
-                <span
-                  className={`overflow-hidden whitespace-nowrap text-sm transition-all duration-200 ${
-                    isActive
-                      ? 'ml-2 max-w-36 translate-x-0 font-semibold opacity-100'
-                      : 'ml-0 max-w-0 -translate-x-1 opacity-0 group-hover:ml-2 group-hover:max-w-36 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-36 group-focus-visible:translate-x-0 group-focus-visible:opacity-100'
-                  }`}
-                >
-                  {item.label}
-                </span>
-              </a>
-            )
-          })}
-        </nav>
-
-        <div className="shrink-0">
-          <ThemeToggle />
-        </div>
+            <div className="navbarMobileActions">
+              <ThemeToggle compact />
+              <button
+                type="button"
+                className="navbarMobileMenuButton"
+                aria-label="Toggle navigation menu"
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="navbar-mobile-menu"
+                onClick={() => setIsMobileMenuOpen((open) => !open)}
+              >
+                <List size={18} weight="bold" aria-hidden="true" />
+              </button>
+            </div>
+          </>
+        )}
       </div>
+
+      {isMobileMenuOpen && isCollapsed ? (
+        <div className="container navbarMobileMenuWrap" ref={mobileMenuRef}>
+          <nav id="navbar-mobile-menu" className="navbarMobileMenu" aria-label="Mobile">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeId === item.id
+              const Icon = item.Icon
+
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  aria-current={isActive ? 'page' : undefined}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`navbarMobileMenuItem ${isActive ? 'navbarMobileMenuItem--active' : ''}`}
+                >
+                  <Icon size={17} weight="regular" aria-hidden="true" />
+                  <span>{item.label}</span>
+                </a>
+              )
+            })}
+          </nav>
+        </div>
+      ) : null}
     </header>
   )
 }

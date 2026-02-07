@@ -18,7 +18,11 @@ function getSystemTheme(): Theme {
   return window.matchMedia(MEDIA_QUERY).matches ? 'dark' : 'light'
 }
 
-function ThemeToggle() {
+type ThemeToggleProps = {
+  compact?: boolean
+}
+
+function ThemeToggle({ compact = false }: ThemeToggleProps) {
   const [theme, setTheme] = useState<Theme>(
     () => getStoredTheme() ?? getSystemTheme()
   )
@@ -55,22 +59,34 @@ function ThemeToggle() {
   return (
     <button
       type="button"
-      className={`themeToggle ${theme === 'dark' ? 'is-dark' : 'is-light'}`}
+      className={`themeToggle ${compact ? 'themeToggle--icon' : ''} ${theme === 'dark' ? 'is-dark' : 'is-light'}`.trim()}
       onClick={handleToggle}
       aria-label="Toggle theme"
       aria-pressed={theme === 'dark'}
     >
-      <span className="themeToggleLabel">DARK</span>
-      <span className="themeToggleSwitch" aria-hidden="true">
-        <span className="themeToggleThumb">
+      {compact ? (
+        <span className="themeToggleIconOnly" aria-hidden="true">
           {theme === 'dark' ? (
-            <Moon size={12} weight="regular" aria-hidden="true" />
+            <Sun size={16} weight="regular" aria-hidden="true" />
           ) : (
-            <Sun size={12} weight="regular" aria-hidden="true" />
+            <Moon size={16} weight="regular" aria-hidden="true" />
           )}
         </span>
-      </span>
-      <span className="themeToggleLabel">LIGHT</span>
+      ) : (
+        <>
+          <span className="themeToggleLabel">DARK</span>
+          <span className="themeToggleSwitch" aria-hidden="true">
+            <span className="themeToggleThumb">
+              {theme === 'dark' ? (
+                <Moon size={12} weight="regular" aria-hidden="true" />
+              ) : (
+                <Sun size={12} weight="regular" aria-hidden="true" />
+              )}
+            </span>
+          </span>
+          <span className="themeToggleLabel">LIGHT</span>
+        </>
+      )}
     </button>
   )
 }
