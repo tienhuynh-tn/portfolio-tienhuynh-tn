@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+} from 'react'
 import { List } from '@phosphor-icons/react'
 import { NAV_ITEMS, type NavItemId } from '../../app/navItems'
 import ThemeToggle from './ThemeToggle'
@@ -226,10 +232,28 @@ function Navbar() {
     }
   }, [isMobileMenuOpen])
 
-  const handleNavClick = (id: NavItemId) => {
+  const handleNavClick = (
+    event: ReactMouseEvent<HTMLAnchorElement>,
+    id: NavItemId
+  ) => {
+    event.preventDefault()
+
     setActiveId(id)
     setIsMobileMenuOpen(false)
     ignoreObserverUntilRef.current = performance.now() + 300
+
+    const section = document.getElementById(id)
+    if (section) {
+      const headerHeight = navRef.current?.getBoundingClientRect().height ?? 72
+      const heading = section.querySelector<HTMLElement>('h1, h2, h3')
+      const targetTop = (heading ?? section).getBoundingClientRect().top + window.scrollY
+      const offset = headerHeight + 12
+      window.scrollTo({
+        top: Math.max(targetTop - offset, 0),
+        behavior: 'smooth',
+      })
+      window.history.replaceState(null, '', `#${id}`)
+    }
 
     if (lockTimeoutRef.current !== null) {
       window.clearTimeout(lockTimeoutRef.current)
@@ -271,7 +295,7 @@ function Navbar() {
                     href={`#${item.id}`}
                     aria-label={item.label}
                     aria-current={isActive ? 'page' : undefined}
-                    onClick={() => handleNavClick(item.id)}
+                    onClick={(event) => handleNavClick(event, item.id)}
                     className={`group inline-flex shrink-0 items-center rounded-full px-2 py-1.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] ${
                       isActive
                         ? 'text-[color:var(--primary)]'
@@ -348,7 +372,7 @@ function Navbar() {
                   key={item.id}
                   href={`#${item.id}`}
                   aria-current={isActive ? 'page' : undefined}
-                  onClick={() => handleNavClick(item.id)}
+                  onClick={(event) => handleNavClick(event, item.id)}
                   className={`navbarMobileMenuItem ${isActive ? 'navbarMobileMenuItem--active' : ''}`}
                 >
                   <Icon size={17} weight="regular" aria-hidden="true" />

@@ -17,11 +17,7 @@ function Section({
   className = '',
 }: SectionProps) {
   return (
-    <section
-      id={id}
-      className={`section section--${variant} ${className}`.trim()}
-      style={{ scrollMarginTop: '96px' }}
-    >
+    <section id={id} className={`section section--${variant} ${className}`.trim()}>
       <Container>
         {title ? (
           <header className="sectionHeader">
