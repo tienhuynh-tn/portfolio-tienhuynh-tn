@@ -11,6 +11,7 @@ import Experience from '../sections/Experience'
 import Hero from '../sections/Hero'
 import Projects from '../sections/Projects'
 import Skills from '../sections/Skills'
+import ProjectsPage from './ProjectsPage'
 
 const SECTION_COMPONENTS: Record<NavItemId, ReactElement> = {
   home: <Hero />,
@@ -36,6 +37,12 @@ function App() {
     document.body.style.width = ''
     document.body.style.height = ''
   }, [])
+
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
+
+  if (pathname === '/projects') {
+    return <ProjectsPage />
+  }
 
   return (
     <>

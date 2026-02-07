@@ -1,44 +1,104 @@
 export type Project = {
+  id: string
   title: string
   description: string
-  techStack: string[]
+  tags: string[]
+  featured: boolean
+  links: {
+    source?: string
+    live?: string
+    caseStudy?: string
+  }
+  image?: string
+  period?: string
+  role?: string
 }
 
 export const projects: Project[] = [
   {
+    id: 'inventory-control-service',
     title: 'Inventory Control Service',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod libero at sem luctus, vitae scelerisque lorem pulvinar.',
-    techStack: ['Java', 'Spring Boot', 'PostgreSQL', 'AWS'],
+      'A resilient inventory backend that handles stock movements, forecasting inputs, and audit-safe change history for operations teams.',
+    tags: ['Java', 'Spring Boot', 'PostgreSQL', 'AWS'],
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=1200&q=80',
+    links: {
+      live: 'https://tienhuynh-tn.github.io',
+      source: 'https://github.com/tienhuynh-tn',
+    },
   },
   {
+    id: 'order-processing-pipeline',
     title: 'Order Processing Pipeline',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut aliquet justo, non tincidunt purus.',
-    techStack: ['Java', 'Kafka', 'Redis', 'Docker'],
+      'An event-driven pipeline that validates, enriches, and routes orders with retry policies and observability for high-throughput traffic.',
+    tags: ['Java', 'Kafka', 'Redis', 'Docker'],
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+    links: {
+      live: 'https://tienhuynh-tn.github.io',
+      source: 'https://github.com/tienhuynh-tn',
+      caseStudy: '#',
+    },
   },
   {
+    id: 'customer-insights-platform',
     title: 'Customer Insights Platform',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat, ligula a volutpat gravida, ipsum velit placerat nulla.',
-    techStack: ['Java', 'Spring Batch', 'MySQL', 'Terraform'],
+      'A data-to-API platform for customer behavior insights, combining scheduled ingestion, domain services, and reporting endpoints.',
+    tags: ['Java', 'Spring Batch', 'MySQL', 'OpenSearch'],
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+    links: {
+      live: 'https://tienhuynh-tn.github.io',
+      source: 'https://github.com/tienhuynh-tn',
+    },
   },
   {
+    id: 'payments-reconciliation-tool',
     title: 'Payments Reconciliation Tool',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.',
-    techStack: ['Java', 'Spring Boot', 'MongoDB', 'Kubernetes'],
+      'A reconciliation workflow that matches gateway transactions and ledger records with exception queues for manual review.',
+    tags: ['Java', 'Spring Boot', 'MongoDB', 'Kubernetes'],
+    featured: false,
+    image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80',
+    links: {
+      live: 'https://tienhuynh-tn.github.io',
+      source: 'https://github.com/tienhuynh-tn',
+    },
   },
   {
+    id: 'service-health-dashboard',
     title: 'Service Health Dashboard',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel nibh sed lectus viverra fermentum.',
-    techStack: ['React', 'TypeScript', 'Vite', 'Charting'],
+      'A frontend observability dashboard with service status views, incident timelines, and trend summaries for engineering teams.',
+    tags: ['React', 'TypeScript', 'Vite', 'Charting'],
+    featured: false,
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+    links: {
+      live: 'https://tienhuynh-tn.github.io',
+      source: 'https://github.com/tienhuynh-tn',
+    },
   },
   {
+    id: 'api-gateway-modernization',
     title: 'API Gateway Modernization',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem nec turpis vulputate tristique vel at ipsum.',
-    techStack: ['Java', 'Spring Cloud', 'SQL', 'AWS'],
+      'A modernization effort that standardized API contracts, security policies, and release workflows across core backend services.',
+    tags: ['Java', 'Spring Cloud', 'SQL', 'AWS'],
+    featured: false,
+    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80',
+    links: {
+      live: 'https://tienhuynh-tn.github.io',
+      source: 'https://github.com/tienhuynh-tn',
+    },
   },
+]
+
+export const featuredProjects = projects.filter((project) => project.featured)
+
+export const allProjects = [
+  ...projects.filter((project) => project.featured),
+  ...projects.filter((project) => !project.featured),
 ]

@@ -1,41 +1,55 @@
 import type { Project } from '../../data/projects'
 
-const LINK_LABELS = ['GitHub', 'Live', 'Case Study']
-
-const TYPE_LABELS = ['Backend System', 'Platform', 'Service']
-
 type ProjectCardProps = {
   project: Project
 }
 
 function ProjectCard({ project }: ProjectCardProps) {
-  const typeLabel = TYPE_LABELS[project.title.length % TYPE_LABELS.length]
+  const links = [
+    { label: 'Live', href: project.links.live },
+    { label: 'Source', href: project.links.source },
+    { label: 'Case Study', href: project.links.caseStudy },
+  ].filter((link): link is { label: string; href: string } => Boolean(link.href))
 
   return (
-    <article className="card projectCard">
-      <div className="cardHeader">
-        <div className="cardIcon" aria-hidden="true" />
-        <span className="cardType">{typeLabel}</span>
-      </div>
+    <article className="skillsGroup projectCard">
+      <div className="skillsGroupInner">
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={`${project.title} preview`}
+            className="h-44 w-full rounded-xl object-cover"
+            loading="lazy"
+          />
+        ) : null}
 
-      <div className="cardContent">
-        <h3 className="cardTitle">{project.title}</h3>
-        <p className="cardDesc">{project.description}</p>
-        <div className="tags">
-          {project.techStack.map((tech) => (
-            <span key={tech} className="tag">
-              {tech}
-            </span>
+        <h3 className="itemTitle">{project.title}</h3>
+
+        <ul className="skillsBadges" aria-label={`${project.title} technology stack`}>
+          {project.tags.map((tech) => (
+            <li key={tech} className="skillBadge">
+              <span>{tech}</span>
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
 
-      <div className="cardLinks">
-        {LINK_LABELS.map((label) => (
-          <a key={label} href="#" className="cardLink">
-            {label}
-          </a>
-        ))}
+        <p className="cardDesc">{project.description}</p>
+
+        {links.length > 0 ? (
+          <div className="cardLinks">
+            {links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="cardLink"
+                target={link.href.startsWith('http') ? '_blank' : undefined}
+                rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        ) : null}
       </div>
     </article>
   )
