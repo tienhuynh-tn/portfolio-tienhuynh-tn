@@ -43,9 +43,8 @@ function Navbar() {
   const scrollToId = (id: string, behavior: ScrollBehavior = 'smooth') => {
     const element = document.getElementById(id)
     if (!element) return false
-    const target = element.querySelector<HTMLElement>('h1, h2, h3') ?? element
     window.history.replaceState(null, '', `#${id}`)
-    target.scrollIntoView({ behavior, block: 'start' })
+    element.scrollIntoView({ behavior, block: 'start' })
     return true
   }
 

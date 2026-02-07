@@ -18,7 +18,7 @@ function About() {
   const revealRef = useRevealOnScroll<HTMLDivElement>()
 
   return (
-    <Section id="about" className="pt-6 md:pt-8 pb-6 md:pb-8">
+    <Section id="about" className="pb-6 md:pb-8">
       <div className="reveal" ref={revealRef}>
         <h2 className="mb-7 text-center text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[color:var(--primary)] via-[color:var(--primary)] to-[color:var(--primary)] md:text-[2.7rem]">
           About Me

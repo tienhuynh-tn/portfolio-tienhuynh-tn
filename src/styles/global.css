@@ -199,7 +199,9 @@ h3 {
 }
 
 section[id] {
-  scroll-margin-top: var(--nav-offset);
+  scroll-margin-top: calc(
+    var(--navbar-height) + 12px - var(--space-section-y)
+  );
 }
 
 a {
