@@ -1,3 +1,14 @@
+import {
+  BracketsCurly,
+  Cloud,
+  Cube,
+  Database,
+  GitBranch,
+  Globe,
+  Leaf,
+  Lightning,
+  TerminalWindow,
+} from '@phosphor-icons/react'
 import Section from '../components/layout/Section'
 import useRevealOnScroll from '../hooks/useRevealOnScroll'
 
@@ -45,6 +56,39 @@ const SKILL_CATEGORIES = [
   },
 ]
 
+const SKILL_ICONS: Record<string, typeof BracketsCurly> = {
+  Java: BracketsCurly,
+  'Spring Boot': Leaf,
+  '.NET': BracketsCurly,
+  'C#': BracketsCurly,
+  PHP: BracketsCurly,
+  Laravel: Leaf,
+  'Microsoft SQL Server': Database,
+  PostgreSQL: Database,
+  MySQL: Database,
+  MongoDB: Database,
+  'Amazon DynamoDB': Database,
+  AWS: Cloud,
+  Azure: Cloud,
+  Docker: Cube,
+  Kubernetes: Cube,
+  Git: GitBranch,
+  GitHub: GitBranch,
+  Bitbucket: GitBranch,
+  'GitHub Actions': Lightning,
+  CircleCI: Lightning,
+  'Travis CI': Lightning,
+  'Apache Kafka': TerminalWindow,
+  RabbitMQ: TerminalWindow,
+  ActiveMQ: TerminalWindow,
+  Jira: Globe,
+  Confluence: Globe,
+  JavaScript: BracketsCurly,
+  React: BracketsCurly,
+  Sass: BracketsCurly,
+  Bootstrap: BracketsCurly,
+}
+
 function Skills() {
   const revealRef = useRevealOnScroll<HTMLDivElement>()
 
@@ -67,18 +111,28 @@ function Skills() {
           {SKILL_CATEGORIES.map((group, index) => (
             <article
               key={group.title}
-              className="skillsGroup item reveal"
+              className="skillsGroup reveal"
               style={{ ['--reveal-delay' as string]: `${index * 80}ms` }}
             >
-              <h3 className="itemTitle">{group.title}</h3>
-              <ul className="skillsBadges" aria-label={`${group.title} skills`}>
-                {group.skills.map((skill) => (
-                  <li key={skill} className="skillBadge">
-                    <span className="skillBadgeIcon" aria-hidden="true" />
-                    <span>{skill}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="skillsGroupInner">
+                <h3 className="itemTitle">{group.title}</h3>
+                <ul className="skillsBadges" aria-label={`${group.title} skills`}>
+                  {group.skills.map((skill) => {
+                    const Icon = SKILL_ICONS[skill] ?? BracketsCurly
+                    return (
+                      <li key={skill} className="skillBadge">
+                        <Icon
+                          size={15}
+                          weight="regular"
+                          aria-hidden="true"
+                          className="skillBadgeIcon"
+                        />
+                        <span>{skill}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
             </article>
           ))}
         </div>
