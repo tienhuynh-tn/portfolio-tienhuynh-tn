@@ -15,7 +15,7 @@ import useRevealOnScroll from '../hooks/useRevealOnScroll'
 const SKILL_CATEGORIES = [
   {
     title: 'Backend',
-    skills: ['Java', 'Spring Boot', '.NET', 'C#', 'PHP', 'Laravel'],
+    skills: ['Java', 'Spring Boot', '.NET', 'C#', 'PHP', 'Laravel', 'Redis', 'C'],
   },
   {
     title: 'Databases',
@@ -25,11 +25,13 @@ const SKILL_CATEGORIES = [
       'MySQL',
       'MongoDB',
       'Amazon DynamoDB',
+      'Oracle',
+      'OpenSearch',
     ],
   },
   {
     title: 'Cloud & Infrastructure',
-    skills: ['AWS', 'Azure', 'Docker', 'Kubernetes'],
+    skills: ['AWS', 'Azure', 'Google Cloud', 'Docker', 'Kubernetes', 'OpenShift'],
   },
   {
     title: 'CI/CD & DevOps',
@@ -40,6 +42,8 @@ const SKILL_CATEGORIES = [
       'GitHub Actions',
       'CircleCI',
       'Travis CI',
+      'Jenkins',
+      'Argo CD',
     ],
   },
   {
@@ -51,8 +55,12 @@ const SKILL_CATEGORIES = [
     skills: ['Jira', 'Confluence'],
   },
   {
-    title: 'Front-end',
-    skills: ['JavaScript', 'React', 'Sass', 'Bootstrap'],
+    title: 'AI',
+    skills: ['AI Integrations', 'Prompt Engineering'],
+  },
+  {
+    title: 'Frontend',
+    skills: ['JavaScript', 'React', 'Sass', 'Bootstrap', 'Flutter'],
   },
 ]
 
@@ -68,21 +76,29 @@ const SKILL_ICONS: Record<string, typeof BracketsCurly> = {
   MySQL: Database,
   MongoDB: Database,
   'Amazon DynamoDB': Database,
+  Oracle: Database,
   AWS: Cloud,
   Azure: Cloud,
+  'Google Cloud': Cloud,
   Docker: Cube,
   Kubernetes: Cube,
+  OpenShift: Cube,
   Git: GitBranch,
   GitHub: GitBranch,
   Bitbucket: GitBranch,
   'GitHub Actions': Lightning,
   CircleCI: Lightning,
   'Travis CI': Lightning,
+  Jenkins: Lightning,
+  'Argo CD': Lightning,
   'Apache Kafka': TerminalWindow,
   RabbitMQ: TerminalWindow,
   ActiveMQ: TerminalWindow,
   Jira: Globe,
   Confluence: Globe,
+  Redis: Database,
+  'AI Integrations': BracketsCurly,
+  'Prompt Engineering': BracketsCurly,
   JavaScript: BracketsCurly,
   React: BracketsCurly,
   Sass: BracketsCurly,
