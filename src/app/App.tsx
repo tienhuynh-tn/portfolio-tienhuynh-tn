@@ -3,14 +3,15 @@ import Navbar from '../components/layout/Navbar'
 import ScrollToTop from '../components/layout/ScrollToTop'
 import { NAV_ITEMS, type NavItemId } from './navItems'
 import Activity from '../sections/Activity'
-import Awards from '../sections/Awards'
 import About from '../sections/About'
 import Contact from '../sections/Contact'
+import Credentials from '../sections/Credentials'
 import Education from '../sections/Education'
 import Experience from '../sections/Experience'
 import Hero from '../sections/Hero'
 import Projects from '../sections/Projects'
 import Skills from '../sections/Skills'
+import CredentialsPage from './CredentialsPage'
 import ProjectsPage from './ProjectsPage'
 
 const SECTION_COMPONENTS: Record<NavItemId, ReactElement> = {
@@ -20,7 +21,7 @@ const SECTION_COMPONENTS: Record<NavItemId, ReactElement> = {
   projects: <Projects />,
   experience: <Experience />,
   education: <Education />,
-  awards: <Awards />,
+  credentials: <Credentials />,
   activity: <Activity />,
   contact: <Contact />,
 }
@@ -42,6 +43,10 @@ function App() {
 
   if (pathname === '/projects') {
     return <ProjectsPage />
+  }
+
+  if (pathname === '/credentials' || pathname === '/certifications') {
+    return <CredentialsPage />
   }
 
   return (
